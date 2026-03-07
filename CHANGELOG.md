@@ -9,6 +9,7 @@
 - Dependencies: bump `@lucide/astro` to `0.577.0` and sync `bun.lock` (#99, thanks @dependabot).
 - CI: update Bun setup pin and move the install-smoke Node setup to the pinned `actions/setup-node` v6 SHA (#98, thanks @dependabot).
 - Installer: recover from older PATH-bound Node runtimes after install, but keep the fallback `openclaw` shim in `~/.local/bin` instead of mutating version-manager bins (#68, thanks @rolandkakonyi).
+- Dependencies: update `astro` to `5.18.0` and `simple-icons` to `16.10.0`; add workflow concurrency so stale install jobs on `main` cancel instead of queueing indefinitely.
 ## 2026-02-22
 
 - Installer: make gum behavior fully automatic (interactive TTYs get gum, headless shells get plain status), and remove manual gum toggles.

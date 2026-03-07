@@ -17,9 +17,9 @@
     "@astrojs/rss": "^4.0.15",
     "@lucide/astro": "^0.577.0",
     "@vercel/analytics": "^1.6.1",
-    "astro": "^5.17.2",
+    "astro": "^5.18.0",
     "js-yaml": "^4.1.1",
-    "simple-icons": "^16.8.0"
+    "simple-icons": "^16.10.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9"
