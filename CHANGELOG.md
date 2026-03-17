@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-03-16
+
+- Integrations: correct MS Teams docs link to the canonical `/channels/msteams` path (#109, thanks @SidU).
+
 ## 2026-03-07
 
 - Shoutouts: use the theme-aware card surface token so shoutout cards render correctly in light mode (#100, thanks @zwying0814).
