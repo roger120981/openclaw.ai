@@ -35,6 +35,15 @@ curl_cli_install() {
   fi
 }
 
+extract_version() {
+  local raw="$1"
+  if [[ "$raw" =~ ([0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z]+)*) ]]; then
+    printf '%s\n' "${BASH_REMATCH[1]}"
+  else
+    printf '%s\n' "$raw"
+  fi
+}
+
 echo "==> Installer: --help"
 curl_install | bash -s -- --help >/tmp/install-help.txt
 grep -q -- "--install-method" /tmp/install-help.txt
@@ -100,9 +109,10 @@ if [[ -z "$NEXT_VERSION" ]]; then
   NEXT_VERSION="$LATEST_VERSION"
 fi
 
-INSTALLED_VERSION="$("$CMD_PATH" --version 2>/dev/null | head -n 1 | tr -d '\r')"
+INSTALLED_VERSION_RAW="$("$CMD_PATH" --version 2>/dev/null | head -n 1 | tr -d '\r')"
+INSTALLED_VERSION="$(extract_version "$INSTALLED_VERSION_RAW")"
 
-echo "installed=$INSTALLED_VERSION latest=$LATEST_VERSION next=$NEXT_VERSION"
+echo "installed=$INSTALLED_VERSION raw=$INSTALLED_VERSION_RAW latest=$LATEST_VERSION next=$NEXT_VERSION"
 if [[ "$INSTALLED_VERSION" != "$LATEST_VERSION" && "$INSTALLED_VERSION" != "$NEXT_VERSION" ]]; then
   echo "ERROR: expected ${PKG_NAME}@$LATEST_VERSION (latest) or @$NEXT_VERSION (next), got @$INSTALLED_VERSION" >&2
   exit 1

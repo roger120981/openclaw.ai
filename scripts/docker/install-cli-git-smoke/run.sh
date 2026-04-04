@@ -18,6 +18,15 @@ curl_cli_install() {
   fi
 }
 
+extract_version() {
+  local raw="$1"
+  if [[ "$raw" =~ ([0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z]+)*) ]]; then
+    printf '%s\n' "${BASH_REMATCH[1]}"
+  else
+    printf '%s\n' "$raw"
+  fi
+}
+
 echo "==> CLI installer: --help"
 curl_cli_install | bash -s -- --help >/tmp/install-cli-help.txt
 grep -q -- "--install-method" /tmp/install-cli-help.txt
@@ -53,8 +62,9 @@ echo "==> Verify openclaw runs"
 
 echo "==> Verify version matches checkout"
 EXPECTED_VERSION="$(node -e "console.log(JSON.parse(require('fs').readFileSync('${REPO_DIR}/package.json','utf8')).version)")"
-INSTALLED_VERSION="$("${INSTALL_PREFIX}/bin/openclaw" --version 2>/dev/null | head -n 1 | tr -d '\r')"
-echo "installed=$INSTALLED_VERSION expected=$EXPECTED_VERSION"
+INSTALLED_VERSION_RAW="$("${INSTALL_PREFIX}/bin/openclaw" --version 2>/dev/null | head -n 1 | tr -d '\r')"
+INSTALLED_VERSION="$(extract_version "$INSTALLED_VERSION_RAW")"
+echo "installed=$INSTALLED_VERSION raw=$INSTALLED_VERSION_RAW expected=$EXPECTED_VERSION"
 if [[ "$INSTALLED_VERSION" != "$EXPECTED_VERSION" ]]; then
   echo "ERROR: expected openclaw@$EXPECTED_VERSION, got $INSTALLED_VERSION" >&2
   exit 1
